@@ -28,13 +28,13 @@
                <a class="nav-link" href="#">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Web/DangKy.php">Register</a>
+                <a class="nav-link" href="Web/Register.php">Register</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Web/Log.php">Login</a>
+                <a class="nav-link" href="Web/Login.php">Login</a>
             </li>
              <li class="nav-item">
-                 <a class="nav-link" href="Web/DangNhap.php">Dang nhap</a>
+                 <a class="nav-link" href="Web/LogOut.php">Logout</a>
             </li>
          </ul>
 
