@@ -51,7 +51,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         } 
         // Check if username exists, if yes then verify password
         $login_check = pg_num_rows($result);
-        if($login_check >0){                    
+        if($login_check >0){   
+                echo 'co user';
                if(password_verify($result['password'], $hashed_password)){
                             // Password is correct, so start a new session
                             session_start();
@@ -70,6 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     }
                  else{
                     // Display an error message if username doesn't exist
+                     echo 'Khong co user';
                     $username_err = "No account found with that username.";
                 }
             } 
