@@ -18,12 +18,17 @@ if(isset($_POST['submit'])&&!empty($_POST['submit'])){
     $data = pg_query($dbconn,$sql); 
     $login_check = pg_num_rows($data);
     if($login_check > 0){ 
-        
-        echo "Login Successfully";    
-    }else{
-        
-        echo "Invalid Details";
-    }
+        session_start();
+         // Store data in session variables
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"] = $id;
+        $_SESSION["username"] = $username;                            
+        // Redirect user to welcome page
+        header("location: Welcome.php");
+        } else{
+          // Display an error message if password is not valid
+         $password_err = "The password you entered was not valid.";
+         }
 }
 ?>
 <!DOCTYPE html>
