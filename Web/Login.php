@@ -32,6 +32,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST["password"]);
     }
     
+    
+    //pg
+    //
+    $conn = pg_connect($connStr);
+    $result = pg_query($conn, "select * from pg_stat_activity");
+    var_dump(pg_fetch_all($result));
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
