@@ -35,32 +35,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     //pg
     //
-    $conn = pg_connect($connStr);
-    $result = pg_query($conn, "select * from pg_stat_activity");
-    var_dump(pg_fetch_all($result));
+   
+   
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users1 WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
+        $hashpassword = md5($_POST['password']);
+        $conn = pg_connect($connStr);
+        $sql = "SELECT id, username, password FROM users1 WHERE username = '" 
+                .$username."'";
+        $result = pg_query($conn, $sql);
+        if(!$result) {
+                echo pg_last_error($db);
+                exit;
+        } 
+        // Check if username exists, if yes then verify password
+        $login_check = pg_num_rows($result);
+        if($login_check >0){                    
+               if(password_verify($result['password'], $hashed_password)){
                             // Password is correct, so start a new session
                             session_start();
                             
@@ -76,22 +68,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $password_err = "The password you entered was not valid.";
                         }
                     }
-                } else{
+                 else{
                     // Display an error message if username doesn't exist
                     $username_err = "No account found with that username.";
                 }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
-        }
+            } 
     }
-    
-    // Close connection
-    mysqli_close($link);
-}
 ?>
  
 <!DOCTYPE html>
